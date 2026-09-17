@@ -1,0 +1,622 @@
+/* Dr. Katakana - Milestone 1 Stylesheet */
+:root {
+  --bg-main: #090D16;
+  --bg-card: #0F172A;
+  --bg-card-header: #1E293B;
+  --border-card: #334155;
+  --accent-cyan: #38BDF8;
+  --accent-green: #34D399;
+  --accent-pink: #EC4899;
+  --accent-yellow: #FBBF24;
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+  --bottle-glass: #38BDF8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.5rem 1rem;
+}
+
+/* Header */
+.game-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.title-row h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+}
+
+.title-pill {
+  background-color: rgba(56, 189, 248, 0.15);
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+/* Main Layout Grid */
+.game-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1040px;
+}
+
+/* Side Panels */
+.side-panel {
+  flex: 1;
+  max-width: 290px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.panel-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.panel-header {
+  background-color: var(--bg-card-header);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-cyan);
+  border-bottom: 1px solid var(--border-card);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-body {
+  padding: 0.85rem;
+}
+
+/* Status Badges */
+.status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.status-running {
+  background-color: rgba(52, 211, 153, 0.2);
+  color: var(--accent-green);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+.status-paused {
+  background-color: rgba(251, 191, 36, 0.2);
+  color: var(--accent-yellow);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.status-stopped {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* Metric Rows */
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+  font-size: 0.85rem;
+}
+
+.metric-row:last-child {
+  border-bottom: none;
+}
+
+.metric-label {
+  color: var(--text-muted);
+}
+
+.metric-value {
+  font-family: monospace;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Level Stepper Controls */
+.level-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-level-step {
+  background: #1E293B;
+  border: 1px solid #334155;
+  color: #94A3B8;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.15s ease-in-out;
+  user-select: none;
+}
+
+.btn-level-step:hover {
+  background: #334155;
+  color: #F8FAFC;
+  border-color: #38BDF8;
+  transform: translateY(-1px);
+}
+
+.btn-level-step:active {
+  background: #38BDF8;
+  color: #0F172A;
+  transform: translateY(0);
+}
+
+/* Center Bottle & Canvas Frame */
+.canvas-container-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Dr. Mario Bottle Neck Decorator */
+.bottle-neck-frame {
+  width: 100px;
+  height: 24px;
+  background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+  border-top: 3px solid var(--bottle-glass);
+  border-left: 3px solid var(--bottle-glass);
+  border-right: 3px solid var(--bottle-glass);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: -2px;
+  z-index: 2;
+}
+
+.bottle-neck-chute {
+  width: 72px;
+  height: 6px;
+  background-color: rgba(56, 189, 248, 0.3);
+  border-radius: 3px;
+}
+
+.bottle-body-frame {
+  padding: 10px;
+  background-color: #0B1120;
+  border: 3px solid var(--bottle-glass);
+  border-radius: 16px;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.15), inset 0 0 16px rgba(0, 0, 0, 0.8);
+  position: relative;
+}
+
+#game-canvas {
+  display: block;
+  background-color: #0F172A;
+  border-radius: 8px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Controls list */
+.control-key-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.control-key-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.kbd-badge {
+  background-color: #1E293B;
+  border: 1px solid #475569;
+  border-bottom: 2px solid #334155;
+  color: var(--accent-cyan);
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+}
+
+/* Dictionary Preview Grid */
+.dict-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+}
+
+/* Katakana Row Selector Menu */
+.row-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.35rem;
+}
+
+.row-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.5rem;
+  background-color: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #94A3B8;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  user-select: none;
+  text-align: left;
+}
+
+.row-toggle-btn:hover {
+  background-color: #334155;
+  color: #F8FAFC;
+  border-color: #475569;
+  transform: translateY(-1px);
+}
+
+.row-toggle-btn.selected {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: #38BDF8;
+  color: #FFFFFF;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.18);
+}
+
+.row-toggle-btn .row-btn-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.row-toggle-btn .row-btn-title {
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: inherit;
+}
+
+.row-toggle-btn .row-btn-chars {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.row-toggle-btn.selected .row-btn-chars {
+  color: #BAE6FD;
+}
+
+.row-toggle-btn .row-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: #334155;
+  color: #64748B;
+  transition: all 0.15s ease-in-out;
+}
+
+.row-toggle-btn.selected .row-indicator {
+  background: #38BDF8;
+  color: #0F172A;
+}
+
+.row-toggle-btn.pulse-alert {
+  animation: alertShake 0.3s ease-in-out;
+}
+
+@keyframes alertShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* Random Katakana Mix Section */
+.random-mix-container {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed #334155;
+}
+
+.random-mix-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.random-mix-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.random-count-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.random-count-btn {
+  padding: 0.35rem 0.2rem;
+  background-color: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #94A3B8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease-in-out;
+}
+
+.random-count-btn:hover {
+  background-color: #334155;
+  color: #F8FAFC;
+  border-color: #475569;
+}
+
+.random-count-btn.active {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: #A855F7;
+  color: #F3E8FF;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+  font-weight: 700;
+}
+
+.btn-reroll {
+  padding: 0.35rem 0.55rem;
+  background: #334155;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  color: #F8FAFC;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.15s ease-in-out;
+  white-space: nowrap;
+}
+
+.btn-reroll:hover {
+  background: #475569;
+  border-color: #64748B;
+  transform: scale(1.03);
+}
+
+.btn-reroll:active {
+  transform: scale(0.97);
+}
+
+.dict-chip {
+  background-color: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.dict-kana {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #FFFFFF;
+}
+
+.dict-romaji {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+}
+
+/* Action Buttons */
+.btn-vertical-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-mode-toggle {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(14, 165, 233, 0.25) 100%);
+  border: 1px solid var(--accent-cyan);
+  color: #FFFFFF;
+  font-weight: 700;
+  padding: 0.6rem 0.85rem;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+.btn-mode-toggle:hover {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(14, 165, 233, 0.4) 100%);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+}
+
+.text-accent-cyan {
+  color: var(--accent-cyan);
+}
+
+.btn-action {
+  flex: 1;
+  background-color: #1E293B;
+  border: 1px solid var(--border-card);
+  color: var(--text-main);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-action:hover {
+  background-color: #334155;
+  border-color: var(--accent-cyan);
+}
+
+.btn-action:active {
+  transform: scale(0.98);
+}
+
+/* Touch / Click Control Pad */
+.touch-control-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.touch-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.touch-btn {
+  flex: 1;
+  background: #1E293B;
+  border: 1px solid #334155;
+  color: var(--text-main);
+  padding: 0.6rem 0.4rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: manipulation;
+  transition: all 0.1s ease;
+}
+
+.touch-btn:hover {
+  background: #334155;
+  border-color: var(--accent-cyan);
+}
+
+.touch-btn:active {
+  background: var(--accent-cyan);
+  color: #0F172A;
+  transform: translateY(1px);
+}
+
+.touch-btn-hard {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.3) 100%);
+  border-color: #EF4444;
+  color: #FCA5A5;
+}
+
+.touch-btn-hard:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.35) 0%, rgba(220, 38, 38, 0.45) 100%);
+  border-color: #F87171;
+  color: #FFFFFF;
+}
+
+.touch-btn-hard:active {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+/* Milestone checklist */
+.checklist {
+  list-style: none;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.checklist li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+}
+
+.checklist li.done {
+  color: var(--accent-green);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .game-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+  .side-panel {
+    max-width: 320px;
+    width: 100%;
+  }
+}

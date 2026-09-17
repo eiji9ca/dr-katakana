@@ -1,0 +1,40 @@
+{
+  "rows": [
+    { "id": "A", "name": "A-Row", "preview": "ア イ ウ エ オ", "kanaRange": "ア~オ", "charIds": ["a", "i", "u", "e", "o"] },
+    { "id": "K", "name": "K-Row", "preview": "カ キ ク ケ コ", "kanaRange": "カ~コ", "charIds": ["ka", "ki", "ku", "ke", "ko"] },
+    { "id": "S", "name": "S-Row", "preview": "サ シ ス セ ソ", "kanaRange": "サ~ソ", "charIds": ["sa", "shi", "su", "se", "so"] },
+    { "id": "T", "name": "T-Row", "preview": "タ チ ツ テ ト", "kanaRange": "タ~ト", "charIds": ["ta", "chi", "tsu", "te", "to"] },
+    { "id": "N", "name": "N-Row", "preview": "ナ ニ ヌ ネ ノ", "kanaRange": "ナ~ノ", "charIds": ["na", "ni", "nu", "ne", "no"] },
+    { "id": "H", "name": "H-Row", "preview": "ハ ヒ フ ヘ ホ", "kanaRange": "ハ~ホ", "charIds": ["ha", "hi", "fu", "he", "ho"] },
+    { "id": "M", "name": "M-Row", "preview": "マ ミ ム メ モ", "kanaRange": "マ~モ", "charIds": ["ma", "mi", "mu", "me", "mo"] },
+    { "id": "Y", "name": "Y-Row", "preview": "ヤ ユ ヨ", "kanaRange": "ヤ~ヨ", "charIds": ["ya", "yu", "yo"] },
+    { "id": "R", "name": "R-Row", "preview": "ラ リ ル レ ロ", "kanaRange": "ラ~ロ", "charIds": ["ra", "ri", "ru", "re", "ro"] },
+    { "id": "W", "name": "W/N-Row", "preview": "ワ ヲ ン", "kanaRange": "ワ~ン", "charIds": ["wa", "wo", "n"] }
+  ],
+  "presets": {
+    "vowels_a": {
+      "name": "A-Row (5 Kana)",
+      "rowIds": ["A"]
+    },
+    "vowels_k": {
+      "name": "A & K Rows (10 Kana)",
+      "rowIds": ["A", "K"]
+    },
+    "s_t": {
+      "name": "S & T Rows (10 Kana)",
+      "rowIds": ["S", "T"]
+    },
+    "n_h": {
+      "name": "N & H Rows (10 Kana)",
+      "rowIds": ["N", "H"]
+    },
+    "m_r_w": {
+      "name": "M, Y, R, W Rows (16 Kana)",
+      "rowIds": ["M", "Y", "R", "W"]
+    },
+    "all": {
+      "name": "All 46 Katakana (Master)",
+      "rowIds": ["A", "K", "S", "T", "N", "H", "M", "Y", "R", "W"]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+[
+  { "id": "a",   "katakana": "ア", "romaji": "A",   "color": "#EF4444", "group": "vowels_k" },
+  { "id": "i",   "katakana": "イ", "romaji": "I",   "color": "#3B82F6", "group": "vowels_k" },
+  { "id": "u",   "katakana": "ウ", "romaji": "U",   "color": "#10B981", "group": "vowels_k" },
+  { "id": "e",   "katakana": "エ", "romaji": "E",   "color": "#F59E0B", "group": "vowels_k" },
+  { "id": "o",   "katakana": "オ", "romaji": "O",   "color": "#8B5CF6", "group": "vowels_k" },
+
+  { "id": "ka",  "katakana": "カ", "romaji": "KA",  "color": "#EC4899", "group": "vowels_k" },
+  { "id": "ki",  "katakana": "キ", "romaji": "KI",  "color": "#06B6D4", "group": "vowels_k" },
+  { "id": "ku",  "katakana": "ク", "romaji": "KU",  "color": "#F97316", "group": "vowels_k" },
+  { "id": "ke",  "katakana": "ケ", "romaji": "KE",  "color": "#14B8A6", "group": "vowels_k" },
+  { "id": "ko",  "katakana": "コ", "romaji": "KO",  "color": "#6366F1", "group": "vowels_k" },
+
+  { "id": "sa",  "katakana": "サ", "romaji": "SA",  "color": "#EF4444", "group": "s_t" },
+  { "id": "shi", "katakana": "シ", "romaji": "SHI", "color": "#3B82F6", "group": "s_t" },
+  { "id": "su",  "katakana": "ス", "romaji": "SU",  "color": "#10B981", "group": "s_t" },
+  { "id": "se",  "katakana": "セ", "romaji": "SE",  "color": "#F59E0B", "group": "s_t" },
+  { "id": "so",  "katakana": "ソ", "romaji": "SO",  "color": "#8B5CF6", "group": "s_t" },
+
+  { "id": "ta",  "katakana": "タ", "romaji": "TA",  "color": "#EC4899", "group": "s_t" },
+  { "id": "chi", "katakana": "チ", "romaji": "CHI", "color": "#06B6D4", "group": "s_t" },
+  { "id": "tsu", "katakana": "ツ", "romaji": "TSU", "color": "#F97316", "group": "s_t" },
+  { "id": "te",  "katakana": "テ", "romaji": "TE",  "color": "#14B8A6", "group": "s_t" },
+  { "id": "to",  "katakana": "ト", "romaji": "TO",  "color": "#6366F1", "group": "s_t" },
+
+  { "id": "na",  "katakana": "ナ", "romaji": "NA",  "color": "#EF4444", "group": "n_h" },
+  { "id": "ni",  "katakana": "ニ", "romaji": "NI",  "color": "#3B82F6", "group": "n_h" },
+  { "id": "nu",  "katakana": "ヌ", "romaji": "NU",  "color": "#10B981", "group": "n_h" },
+  { "id": "ne",  "katakana": "ネ", "romaji": "NE",  "color": "#F59E0B", "group": "n_h" },
+  { "id": "no",  "katakana": "ノ", "romaji": "NO",  "color": "#8B5CF6", "group": "n_h" },
+
+  { "id": "ha",  "katakana": "ハ", "romaji": "HA",  "color": "#EC4899", "group": "n_h" },
+  { "id": "hi",  "katakana": "ヒ", "romaji": "HI",  "color": "#06B6D4", "group": "n_h" },
+  { "id": "fu",  "katakana": "フ", "romaji": "FU",  "color": "#F97316", "group": "n_h" },
+  { "id": "he",  "katakana": "ヘ", "romaji": "HE",  "color": "#14B8A6", "group": "n_h" },
+  { "id": "ho",  "katakana": "ホ", "romaji": "HO",  "color": "#6366F1", "group": "n_h" },
+
+  { "id": "ma",  "katakana": "マ", "romaji": "MA",  "color": "#EF4444", "group": "m_r_w" },
+  { "id": "mi",  "katakana": "ミ", "romaji": "MI",  "color": "#3B82F6", "group": "m_r_w" },
+  { "id": "mu",  "katakana": "ム", "romaji": "MU",  "color": "#10B981", "group": "m_r_w" },
+  { "id": "me",  "katakana": "メ", "romaji": "ME",  "color": "#F59E0B", "group": "m_r_w" },
+  { "id": "mo",  "katakana": "モ", "romaji": "MO",  "color": "#8B5CF6", "group": "m_r_w" },
+
+  { "id": "ya",  "katakana": "ヤ", "romaji": "YA",  "color": "#EC4899", "group": "m_r_w" },
+  { "id": "yu",  "katakana": "ユ", "romaji": "YU",  "color": "#06B6D4", "group": "m_r_w" },
+  { "id": "yo",  "katakana": "ヨ", "romaji": "YO",  "color": "#F97316", "group": "m_r_w" },
+
+  { "id": "ra",  "katakana": "ラ", "romaji": "RA",  "color": "#14B8A6", "group": "m_r_w" },
+  { "id": "ri",  "katakana": "リ", "romaji": "RI",  "color": "#6366F1", "group": "m_r_w" },
+  { "id": "ru",  "katakana": "ル", "romaji": "RU",  "color": "#EF4444", "group": "m_r_w" },
+  { "id": "re",  "katakana": "レ", "romaji": "RE",  "color": "#3B82F6", "group": "m_r_w" },
+  { "id": "ro",  "katakana": "ロ", "romaji": "RO",  "color": "#10B981", "group": "m_r_w" },
+
+  { "id": "wa",  "katakana": "ワ", "romaji": "WA",  "color": "#F59E0B", "group": "m_r_w" },
+  { "id": "wo",  "katakana": "ヲ", "romaji": "WO",  "color": "#8B5CF6", "group": "m_r_w" },
+  { "id": "n",   "katakana": "ン", "romaji": "N",   "color": "#EC4899", "group": "m_r_w" }
+]

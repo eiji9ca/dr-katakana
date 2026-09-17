@@ -1,0 +1,7 @@
+[
+  { "stage": 1, "viruses": 4, "fallInterval": 750, "title": "Stage 1: Beginner" },
+  { "stage": 2, "viruses": 6, "fallInterval": 650, "title": "Stage 2: Apprentice" },
+  { "stage": 3, "viruses": 8, "fallInterval": 560, "title": "Stage 3: Scholar" },
+  { "stage": 4, "viruses": 10, "fallInterval": 480, "title": "Stage 4: Master" },
+  { "stage": 5, "viruses": 12, "fallInterval": 400, "title": "Stage 5: Grandmaster" }
+]

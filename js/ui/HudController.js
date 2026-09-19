@@ -46,7 +46,7 @@ export class HudController {
    * @param {Object} stats
    */
   updateStats(stats) {
-    if (stats.virusCount !== undefined) {
+    if (stats.virusCount !== undefined && this.elements.virusCount) {
       this.setTextIfChanged(
         this.elements.virusCount,
         'virusCount',
@@ -69,7 +69,7 @@ export class HudController {
     this.setTextIfChanged(this.elements.highScore, 'highScore', `${state.highScore || 0}`);
     this.setTextIfChanged(this.elements.combo, 'combo', state.comboCount > 1 ? `${state.comboCount}x` : '1x');
 
-    if (state.virusCount !== undefined) {
+    if (state.virusCount !== undefined && this.elements.virusCount) {
       this.setTextIfChanged(
         this.elements.virusCount,
         'virusCount',

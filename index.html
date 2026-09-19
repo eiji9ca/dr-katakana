@@ -23,13 +23,12 @@
       <aside class="side-panel" id="panel-left">
         <div class="panel-card" id="card-engine-status">
           <div class="panel-header">
-            <span>Game Status</span>
-            <span class="status-badge status-running" id="hud-status">PLAYING</span>
+            <span>Game Info</span>
           </div>
           <div class="panel-body">
             <div class="metric-row">
               <span class="metric-label">Game Mode</span>
-              <span class="metric-value text-accent-cyan" id="hud-mode-name">Normal (Viruses = Romaji)</span>
+              <span class="metric-value text-accent-cyan" id="hud-mode-name">Normal (Viruses = Hiragana)</span>
             </div>
             <div class="metric-row">
               <span class="metric-label">Game Level</span>
@@ -49,7 +48,7 @@
             </div>
             <div class="metric-row">
               <span class="metric-label">Active Viruses</span>
-              <span class="metric-value" id="hud-virus-count">4 Viruses</span>
+              <span class="metric-value" id="hud-virus-count">3 Viruses</span>
             </div>
             <div class="metric-row">
               <span class="metric-label">Combo Multiplier</span>
@@ -59,27 +58,42 @@
               <span class="metric-label">Active Practice</span>
               <span class="metric-value text-accent-cyan" id="hud-active-rows" style="font-weight:700;">A-Row (5 Kana)</span>
             </div>
-            <div class="metric-row">
-              <span class="metric-label">Visual Theme</span>
-              <span class="metric-value" id="hud-theme-name" style="font-weight:700;color:#F8FAFC;">Ink &amp; Porcelain</span>
-            </div>
 
             <!-- Game Action Controls -->
             <div class="btn-vertical-group">
+              <button class="btn-action btn-start-game" id="btn-start-game">
+                ▶ Start Game
+              </button>
               <button class="btn-action" id="btn-next-stage" style="display:none;background:linear-gradient(135deg, #10B981 0%, #059669 100%);color:#FFFFFF;font-weight:700;box-shadow:0 0 12px rgba(16,185,129,0.3);">
                 &starf; Advance to Next Stage &rarr;
               </button>
               <button class="btn-action btn-mode-toggle" id="btn-toggle-mode">
-                <span id="btn-mode-text">Mode: Mixed (English &amp; Katakana)</span>
+                <span id="btn-mode-text">Mode: Normal (Viruses = Hiragana)</span>
               </button>
               <div class="btn-group">
                 <button class="btn-action" id="btn-mute">🔊 SFX: ON</button>
                 <button class="btn-action" id="btn-bgm">🎵 BGM: OFF</button>
               </div>
               <div class="btn-group">
-                <button class="btn-action" id="btn-pause">Pause</button>
-                <button class="btn-action" id="btn-restart">Restart</button>
+                <button class="btn-action" id="btn-pause" style="display:none;">Pause</button>
+                <button class="btn-action" id="btn-restart" style="display:none;">Restart</button>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Katakana & Hiragana Reference Chart (Positioned right below Game Info for Zero-Scroll Clues) -->
+        <div class="panel-card" id="card-dictionary">
+          <div class="panel-header">
+            <span id="dict-card-title">Kana Reference Chart (5)</span>
+          </div>
+          <div class="panel-body">
+            <div class="dict-grid" id="dict-list">
+              <div class="dict-chip"><span class="dict-kana">ア</span><span class="dict-hira">あ</span></div>
+              <div class="dict-chip"><span class="dict-kana">イ</span><span class="dict-hira">い</span></div>
+              <div class="dict-chip"><span class="dict-kana">ウ</span><span class="dict-hira">う</span></div>
+              <div class="dict-chip"><span class="dict-kana">エ</span><span class="dict-hira">え</span></div>
+              <div class="dict-chip"><span class="dict-kana">オ</span><span class="dict-hira">お</span></div>
             </div>
           </div>
         </div>
@@ -121,21 +135,6 @@
             </div>
           </div>
         </div>
-
-        <div class="panel-card" id="card-dictionary">
-          <div class="panel-header">
-            <span id="dict-card-title">Katakana Reference Chart (5)</span>
-          </div>
-          <div class="panel-body">
-            <div class="dict-grid" id="dict-list">
-              <div class="dict-chip"><span class="dict-kana">ア</span><span class="dict-romaji">A</span></div>
-              <div class="dict-chip"><span class="dict-kana">イ</span><span class="dict-romaji">I</span></div>
-              <div class="dict-chip"><span class="dict-kana">ウ</span><span class="dict-romaji">U</span></div>
-              <div class="dict-chip"><span class="dict-kana">エ</span><span class="dict-romaji">E</span></div>
-              <div class="dict-chip"><span class="dict-kana">オ</span><span class="dict-romaji">O</span></div>
-            </div>
-          </div>
-        </div>
       </aside>
 
       <!-- Center: Dr. Mario Laboratory Bottle Canvas -->
@@ -164,7 +163,7 @@
         </div>
       </section>
 
-      <!-- Right Sidebar: Next Capsule, Controls & Milestone Checklist -->
+      <!-- Right Sidebar: Next Capsule & Collapsible Controls Guide with How-to-Play -->
       <aside class="side-panel" id="panel-right">
         <!-- Next Capsule Preview -->
         <div class="panel-card" id="card-next-capsule">
@@ -180,11 +179,22 @@
           </div>
         </div>
 
-        <div class="panel-card" id="card-controls">
-          <div class="panel-header">
-            <span>Controls Guide</span>
-          </div>
+        <!-- Collapsible Controls Guide & How to Play Tutorial -->
+        <details class="panel-card panel-collapsible" id="card-controls">
+          <summary class="panel-header collapsible-trigger">
+            <span>Controls &amp; How to Play</span>
+            <span class="collapsible-icon">▼</span>
+          </summary>
           <div class="panel-body">
+            <div class="how-to-play-guide">
+              <div class="guide-title">📖 How to Play</div>
+              <ul class="guide-steps">
+                <li>Match <strong>3 or more</strong> of the same Japanese sound in a line (horizontal or vertical) to clear pieces.</li>
+                <li>Line up falling Katakana pills with matching Hiragana viruses to eliminate them.</li>
+                <li>Clear all viruses in the bottle to complete the level!</li>
+                <li>Avoid letting capsules stack up to the top entrance chute.</li>
+              </ul>
+            </div>
             <div class="control-key-list">
               <div class="control-key-item">
                 <span class="metric-label">Move Left</span>
@@ -207,7 +217,7 @@
                 <kbd class="kbd-badge">E</kbd>
               </div>
               <div class="control-key-item">
-                <span class="metric-label">Hard Drop</span>
+                <span class="metric-label">Hard Drop / Start</span>
                 <kbd class="kbd-badge">SPACE</kbd>
               </div>
               <div class="control-key-item">
@@ -219,16 +229,19 @@
                 <kbd class="kbd-badge">R</kbd>
               </div>
               <div class="control-key-item">
+                <span class="metric-label">Toggle Mode</span>
+                <kbd class="kbd-badge">M</kbd>
+              </div>
+              <div class="control-key-item">
                 <span class="metric-label">Select Level</span>
-                <kbd class="kbd-badge">1-5 / [ ]</kbd>
+                <kbd class="kbd-badge">1-9, 0 / [ ]</kbd>
               </div>
             </div>
             <div class="control-notice" style="margin-top:0.75rem;font-size:0.75rem;color:#F59E0B;padding:0.4rem;background:rgba(245,158,11,0.1);border-radius:4px;">
-              Strict control rule: Arrow keys are disabled.
+              Strict arcade rule: A/D/S/Q/E/SPACE controls (Arrow keys disabled).
             </div>
           </div>
-        </div>
-
+        </details>
       </aside>
     </main>
 

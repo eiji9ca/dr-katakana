@@ -17,9 +17,11 @@ export class HudController {
       combo: document.getElementById('hud-combo'),
       activeRows: document.getElementById('hud-active-rows'),
       themeName: document.getElementById('hud-theme-name'),
+      btnStartGame: document.getElementById('btn-start-game'),
       btnNextStage: document.getElementById('btn-next-stage'),
       btnModeText: document.getElementById('btn-mode-text'),
       pauseBtn: document.getElementById('btn-pause'),
+      restartBtn: document.getElementById('btn-restart'),
     };
 
     // Cache of previously applied values to avoid redundant DOM mutations
@@ -61,7 +63,7 @@ export class HudController {
     const stageNum = state.stage || 1;
     this.setTextIfChanged(this.elements.stage, 'stage', `Level ${stageNum}`);
     if (this.elements.stage) {
-      this.elements.stage.title = `Level ${stageNum} (${state.stageViruses || 4} Viruses) - Click to cycle`;
+      this.elements.stage.title = `Level ${stageNum} (${state.stageViruses || 3} Viruses) - Click to cycle`;
     }
     this.setTextIfChanged(this.elements.score, 'score', `${state.score || 0}`);
     this.setTextIfChanged(this.elements.highScore, 'highScore', `${state.highScore || 0}`);
@@ -71,7 +73,7 @@ export class HudController {
       this.setTextIfChanged(
         this.elements.virusCount,
         'virusCount',
-        `${state.virusCount} Virus${state.virusCount === 1 ? '' : 'es'}`
+        `${state.virusCount} Virus${statsToPlural(state.virusCount)}`
       );
     }
 
@@ -84,15 +86,15 @@ export class HudController {
       }
     }
 
-    // Mode labels
+    // Mode labels (Hiragana vs Katakana)
     if (this.elements.modeName) {
-      let modeName = 'Mixed (Kana + Romaji)';
+      let modeName = 'Mixed (Katakana & Hiragana)';
       let modeColor = '#38BDF8';
       if (state.mode === GAME_MODES.REVERSE) {
         modeName = 'Reverse (Viruses = Katakana)';
         modeColor = 'var(--accent-pink)';
       } else if (state.mode === GAME_MODES.NORMAL) {
-        modeName = 'Normal (Viruses = Romaji)';
+        modeName = 'Normal (Viruses = Hiragana)';
         modeColor = 'var(--accent-cyan)';
       }
       this.setTextIfChanged(this.elements.modeName, 'modeName', modeName);
@@ -103,16 +105,16 @@ export class HudController {
     }
 
     if (this.elements.btnModeText) {
-      let btnText = 'Mode: Mixed (English & Katakana)';
+      let btnText = 'Mode: Mixed (Katakana & Hiragana)';
       if (state.mode === GAME_MODES.NORMAL) {
-        btnText = 'Mode: Normal (Viruses = Romaji)';
+        btnText = 'Mode: Normal (Viruses = Hiragana)';
       } else if (state.mode === GAME_MODES.REVERSE) {
         btnText = 'Mode: Reverse (Viruses = Katakana)';
       }
       this.setTextIfChanged(this.elements.btnModeText, 'btnModeText', btnText);
     }
 
-    // Visual Theme
+    // Visual Theme (if element exists)
     if (this.elements.themeName) {
       this.setTextIfChanged(this.elements.themeName, 'themeName', state.themeName || 'Ink & Porcelain');
     }
@@ -121,29 +123,67 @@ export class HudController {
       this.setTextIfChanged(this.elements.activeRows, 'activeRowsDesc', state.selectedRowsDesc);
     }
 
-    // Status badge
+    // Start / Pause / Restart button state transitions
+    if (this.elements.btnStartGame) {
+      if (!state.isStarted) {
+        // Pre-game idle state
+        this.elements.btnStartGame.style.display = 'block';
+        this.setTextIfChanged(this.elements.btnStartGame, 'startBtnText', '▶ Start Game');
+        this.elements.btnStartGame.className = 'btn-action btn-start-game';
+        if (this.elements.pauseBtn) this.elements.pauseBtn.style.display = 'none';
+        if (this.elements.restartBtn) this.elements.restartBtn.style.display = 'none';
+      } else if (state.isPaused) {
+        // Paused state: start button becomes restart button
+        this.elements.btnStartGame.style.display = 'block';
+        this.setTextIfChanged(this.elements.btnStartGame, 'startBtnText', '🔄 Restart Game');
+        this.elements.btnStartGame.className = 'btn-action btn-restart-alt';
+        if (this.elements.pauseBtn) {
+          this.elements.pauseBtn.style.display = 'block';
+          this.setTextIfChanged(this.elements.pauseBtn, 'pauseLabel', '▶ Resume');
+        }
+        if (this.elements.restartBtn) this.elements.restartBtn.style.display = 'none';
+      } else if (state.isGameOver) {
+        this.elements.btnStartGame.style.display = 'block';
+        this.setTextIfChanged(this.elements.btnStartGame, 'startBtnText', '🔄 Play Again');
+        this.elements.btnStartGame.className = 'btn-action btn-start-game';
+        if (this.elements.pauseBtn) this.elements.pauseBtn.style.display = 'none';
+        if (this.elements.restartBtn) this.elements.restartBtn.style.display = 'none';
+      } else if (state.isVictory) {
+        this.elements.btnStartGame.style.display = 'none';
+        if (this.elements.pauseBtn) this.elements.pauseBtn.style.display = 'none';
+        if (this.elements.restartBtn) this.elements.restartBtn.style.display = 'none';
+      } else {
+        // Active gameplay
+        this.elements.btnStartGame.style.display = 'none';
+        if (this.elements.pauseBtn) {
+          this.elements.pauseBtn.style.display = 'block';
+          this.setTextIfChanged(this.elements.pauseBtn, 'pauseLabel', 'Pause');
+        }
+        if (this.elements.restartBtn) {
+          this.elements.restartBtn.style.display = 'block';
+        }
+      }
+    }
+
+    // Status badge (if present)
     if (this.elements.status) {
       let statusText = 'PLAYING';
       let statusClass = 'status-badge status-running';
       let statusBg = '';
-      let pauseLabel = 'Pause';
 
       if (state.isVictory) {
         statusText = 'STAGE CLEAR!';
         statusClass = 'status-badge status-running';
         statusBg = '#10B981';
-        pauseLabel = 'Next Stage';
       } else if (state.isGameOver) {
         statusText = 'GAME OVER';
         statusClass = 'status-badge status-stopped';
-        pauseLabel = 'Restart';
       } else if (!state.isRunning) {
         statusText = 'STOPPED';
         statusClass = 'status-badge status-stopped';
       } else if (state.isPaused) {
         statusText = 'PAUSED';
         statusClass = 'status-badge status-paused';
-        pauseLabel = 'Resume Loop';
       } else if (state.processState === 'matching') {
         statusText = 'MATCHING...';
         statusClass = 'status-badge status-running';
@@ -163,9 +203,10 @@ export class HudController {
         this.elements.status.style.background = statusBg;
         this.cache.statusBg = statusBg;
       }
-      if (this.elements.pauseBtn) {
-        this.setTextIfChanged(this.elements.pauseBtn, 'pauseLabel', pauseLabel);
-      }
     }
   }
+}
+
+function statsToPlural(count) {
+  return count === 1 ? '' : 'es';
 }

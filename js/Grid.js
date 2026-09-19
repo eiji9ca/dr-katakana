@@ -99,7 +99,7 @@ export class Grid {
    * @param {number} row
    * @param {number} col
    * @param {Object} dictEntry
-   * @param {string} [displayType=null] 'katakana' | 'romaji'
+   * @param {string} [displayType=null] 'katakana' | 'hiragana'
    * @param {string} [color=null] Hex color
    * @returns {Object}
    */
@@ -111,7 +111,7 @@ export class Grid {
       entry,
       row,
       col,
-      displayType: displayType || 'romaji',
+      displayType: displayType || 'hiragana',
       color: color || getVirusColor(),
       pulseOffset: Math.random() * Math.PI * 2, // Desynchronizes pulse animations
     };
@@ -243,11 +243,11 @@ export class Grid {
 
       let displayType;
       if (mode === GAME_MODES.MIXED) {
-        displayType = Math.random() < 0.5 ? 'katakana' : 'romaji';
+        displayType = Math.random() < 0.5 ? 'katakana' : 'hiragana';
       } else if (mode === GAME_MODES.REVERSE) {
         displayType = 'katakana';
       } else {
-        displayType = 'romaji';
+        displayType = 'hiragana';
       }
 
       const color = getVirusColor();
@@ -257,7 +257,7 @@ export class Grid {
 
   /**
    * Set up a rich diagnostic test scenario showcasing:
-   * 1. Animated Viruses with a mix of Katakana & Romaji text
+   * 1. Animated Viruses with a mix of Katakana & Hiragana text
    * 2. Connected horizontal capsules
    * 3. Connected vertical capsules
    * 4. Disconnected/single falling capsule halves
@@ -269,11 +269,11 @@ export class Grid {
     const pool = (dictionary.entries && dictionary.entries.length > 0)
       ? dictionary.entries
       : [
-          dictionary.getById('a') || { id: 'a', katakana: 'ア', romaji: 'A', color: '#EF4444' },
-          dictionary.getById('i') || { id: 'i', katakana: 'イ', romaji: 'I', color: '#F97316' },
-          dictionary.getById('u') || { id: 'u', katakana: 'ウ', romaji: 'U', color: '#10B981' },
-          dictionary.getById('e') || { id: 'e', katakana: 'エ', romaji: 'E', color: '#3B82F6' },
-          dictionary.getById('o') || { id: 'o', katakana: 'オ', romaji: 'O', color: '#8B5CF6' },
+          dictionary.getById('a') || { id: 'a', katakana: 'ア', hiragana: 'あ', romaji: 'A', color: '#EF4444' },
+          dictionary.getById('i') || { id: 'i', katakana: 'イ', hiragana: 'い', romaji: 'I', color: '#F97316' },
+          dictionary.getById('u') || { id: 'u', katakana: 'ウ', hiragana: 'う', romaji: 'U', color: '#10B981' },
+          dictionary.getById('e') || { id: 'e', katakana: 'エ', hiragana: 'え', romaji: 'E', color: '#3B82F6' },
+          dictionary.getById('o') || { id: 'o', katakana: 'オ', hiragana: 'お', romaji: 'O', color: '#8B5CF6' },
         ];
 
     const e0 = pool[0 % pool.length];
@@ -285,26 +285,26 @@ export class Grid {
     const virusColor = getVirusColor();
     const capsuleColor = getRandomPillColor();
 
-    // Virus 1: at row 14, col 4 (Romaji)
-    this.addVirus(14, 4, e0, 'romaji', virusColor);
+    // Virus 1: at row 14, col 4 (Hiragana)
+    this.addVirus(14, 4, e0, 'hiragana', virusColor);
 
     // Virus 2: at row 13, col 1 (Katakana)
     this.addVirus(13, 1, e1, 'katakana', virusColor);
 
-    // Virus 3: at row 11, col 6 (Romaji)
-    this.addVirus(11, 6, e2, 'romaji', virusColor);
+    // Virus 3: at row 11, col 6 (Hiragana)
+    this.addVirus(11, 6, e2, 'hiragana', virusColor);
 
     // Virus 4: at row 9, col 3 (Katakana)
     this.addVirus(9, 3, e3, 'katakana', virusColor);
 
     // Horizontal 2-part capsule at bottom row (row 15, cols 0 and 1)
-    this.addHorizontalCapsule(15, 0, e2, e4, 'katakana', 'romaji', capsuleColor, capsuleColor);
+    this.addHorizontalCapsule(15, 0, e2, e4, 'katakana', 'hiragana', capsuleColor, capsuleColor);
 
-    // Horizontal 2-part capsule adjacent to virus at row 14, cols 2 & 3 (shows Katakana + Romaji matching sound e0)
-    this.addHorizontalCapsule(14, 2, e0, e0, 'katakana', 'romaji', capsuleColor, capsuleColor);
+    // Horizontal 2-part capsule adjacent to virus at row 14, cols 2 & 3 (shows Katakana + Hiragana matching sound e0)
+    this.addHorizontalCapsule(14, 2, e0, e0, 'katakana', 'hiragana', capsuleColor, capsuleColor);
 
     // Vertical 2-part capsule at col 6 (rows 13 & 14)
-    this.addVerticalCapsule(13, 6, e4, e1, 'romaji', 'katakana', capsuleColor, capsuleColor);
+    this.addVerticalCapsule(13, 6, e4, e1, 'hiragana', 'katakana', capsuleColor, capsuleColor);
 
     // Single detached capsule half at row 15, col 4 (rests below virus, matching sound e0)
     this.addCapsuleHalf(15, 4, e0, CONNECT_DIR.NONE, null, 'katakana', capsuleColor);

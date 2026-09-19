@@ -11,12 +11,18 @@ export class Dictionary {
     // Master lookup tables for all 46 Katakana alphabet entries
     this.masterById = new Map();
     this.masterByKatakana = new Map();
+    this.masterByHiragana = new Map();
     this.masterByRomaji = new Map();
     if (Array.isArray(ALL_KATAKANA_DICTIONARY)) {
       for (const item of ALL_KATAKANA_DICTIONARY) {
         this.masterById.set(item.id, item);
         this.masterByKatakana.set(item.katakana, item);
-        this.masterByRomaji.set(item.romaji.toUpperCase(), item);
+        if (item.hiragana) {
+          this.masterByHiragana.set(item.hiragana, item);
+        }
+        if (item.romaji) {
+          this.masterByRomaji.set(item.romaji.toUpperCase(), item);
+        }
       }
     }
 
@@ -31,12 +37,18 @@ export class Dictionary {
     this.entries = (entries && entries.length > 0) ? entries : KATAKANA_DICTIONARY;
     this.byId = new Map();
     this.byKatakana = new Map();
+    this.byHiragana = new Map();
     this.byRomaji = new Map();
 
     for (const item of this.entries) {
       this.byId.set(item.id, item);
       this.byKatakana.set(item.katakana, item);
-      this.byRomaji.set(item.romaji.toUpperCase(), item);
+      if (item.hiragana) {
+        this.byHiragana.set(item.hiragana, item);
+      }
+      if (item.romaji) {
+        this.byRomaji.set(item.romaji.toUpperCase(), item);
+      }
     }
   }
 
@@ -57,6 +69,15 @@ export class Dictionary {
   }
 
   /**
+   * Get entry by Hiragana glyph (e.g., 'か')
+   * @param {string} hira
+   */
+  getByHiragana(hira) {
+    if (!hira) return undefined;
+    return this.byHiragana.get(hira) || this.masterByHiragana.get(hira);
+  }
+
+  /**
    * Get entry by Romaji string (e.g., 'KA')
    * @param {string} romaji
    */
@@ -71,7 +92,7 @@ export class Dictionary {
    */
   getRandomEntry() {
     if (!this.entries || this.entries.length === 0) {
-      return (ALL_KATAKANA_DICTIONARY && ALL_KATAKANA_DICTIONARY[0]) || { id: 'a', katakana: 'ア', romaji: 'A', color: '#EF4444' };
+      return (ALL_KATAKANA_DICTIONARY && ALL_KATAKANA_DICTIONARY[0]) || { id: 'a', katakana: 'ア', hiragana: 'あ', romaji: 'A', color: '#EF4444' };
     }
     const idx = Math.floor(Math.random() * this.entries.length);
     return this.entries[idx];
@@ -88,39 +109,41 @@ export class Dictionary {
 
   /**
    * Mode-Aware Text Resolver for Viruses:
-   * Mixed Mode: Respects individual virus.displayType (mix of Katakana & Romaji)
-   * Normal Mode: Viruses display Romaji (KA) -> Player must match with Katakana (カ)
-   * Reverse Mode: Viruses display Katakana (カ) -> Player must match with Romaji (KA)
+   * Mixed Mode: Respects individual virus.displayType (mix of Katakana & Hiragana)
+   * Normal Mode: Viruses display Hiragana (あ) -> Player must match with Katakana (ア)
+   * Reverse Mode: Viruses display Katakana (ア) -> Player must match with Hiragana (あ)
    * @param {Object} entry
    * @param {string} mode
-   * @param {string} [displayType] Optional explicit override ('katakana' | 'romaji')
+   * @param {string} [displayType] Optional explicit override ('katakana' | 'hiragana' | 'romaji')
    * @returns {string}
    */
   getVirusDisplayText(entry, mode = GAME_MODES.MIXED, displayType = null) {
     if (!entry) return '';
     if (displayType === 'katakana') return entry.katakana;
-    if (displayType === 'romaji') return entry.romaji;
+    if (displayType === 'hiragana') return entry.hiragana || entry.romaji;
+    if (displayType === 'romaji') return entry.hiragana || entry.romaji;
     if (mode === GAME_MODES.REVERSE) return entry.katakana;
-    if (mode === GAME_MODES.NORMAL) return entry.romaji;
+    if (mode === GAME_MODES.NORMAL) return entry.hiragana || entry.romaji;
     // Default fallback in mixed mode if no explicit displayType
-    return entry.romaji;
+    return entry.hiragana || entry.romaji;
   }
 
   /**
    * Mode-Aware Text Resolver for Capsules:
-   * Mixed Mode: Respects individual half.displayType (mix of Katakana & Romaji)
-   * Normal Mode: Capsules display Katakana (カ)
-   * Reverse Mode: Capsules display Romaji (KA)
+   * Mixed Mode: Respects individual half.displayType (mix of Katakana & Hiragana)
+   * Normal Mode: Capsules display Katakana (ア)
+   * Reverse Mode: Capsules display Hiragana (あ)
    * @param {Object} entry
    * @param {string} mode
-   * @param {string} [displayType] Optional explicit override ('katakana' | 'romaji')
+   * @param {string} [displayType] Optional explicit override ('katakana' | 'hiragana' | 'romaji')
    * @returns {string}
    */
   getCapsuleDisplayText(entry, mode = GAME_MODES.MIXED, displayType = null) {
     if (!entry) return '';
     if (displayType === 'katakana') return entry.katakana;
-    if (displayType === 'romaji') return entry.romaji;
-    if (mode === GAME_MODES.REVERSE) return entry.romaji;
+    if (displayType === 'hiragana') return entry.hiragana || entry.katakana;
+    if (displayType === 'romaji') return entry.hiragana || entry.romaji;
+    if (mode === GAME_MODES.REVERSE) return entry.hiragana || entry.romaji;
     if (mode === GAME_MODES.NORMAL) return entry.katakana;
     // Default fallback in mixed mode if no explicit displayType
     return entry.katakana;
@@ -138,13 +161,14 @@ export class Dictionary {
   }
 
   /**
-   * Format learning pair for prompt/feedback (e.g., "カ = KA")
+   * Format learning pair for prompt/feedback (e.g., "ア = あ")
    * @param {Object} entry
    * @returns {string}
    */
   formatPair(entry) {
     if (!entry) return '';
-    return `${entry.katakana} = ${entry.romaji}`;
+    const hiraOrRomaji = entry.hiragana || entry.romaji;
+    return `${entry.katakana} = ${hiraOrRomaji}`;
   }
 }
 

@@ -53,7 +53,7 @@ export class Game {
     this.grid = new Grid();
 
     // Mode and settings
-    this.mode = GAME_MODES.MIXED;
+    this.mode = GAME_MODES.NORMAL;
     this.selectedRowIds = ['A'];
     this.customSelectionDesc = null;
 
@@ -81,6 +81,7 @@ export class Game {
     this.nextCapsule = this.generateCapsulePair();
 
     this.fallTimer = 0;
+    this.isStarted = false;
     this.isSoftDropping = false;
     this.isGameOver = false;
     this.isVictory = false;
@@ -110,6 +111,7 @@ export class Game {
             mode: this.mode,
             isGameOver: this.isGameOver,
             score: this.score,
+            isStarted: this.isStarted,
           });
         }
       },
@@ -124,7 +126,9 @@ export class Game {
       onRotateCW: () => this.rotateCW(),
       onRotateCCW: () => this.rotateCCW(),
       onHardDrop: () => {
-        if (this.isVictory) {
+        if (!this.isStarted) {
+          this.startGame();
+        } else if (this.isVictory) {
           this.nextStage();
         } else if (this.isGameOver) {
           this.restart();
@@ -153,6 +157,27 @@ export class Game {
   }
 
   /**
+   * Start or begin gameplay from idle pre-start state
+   */
+  startGame() {
+    this.isStarted = true;
+    this.isGameOver = false;
+    this.isVictory = false;
+    if (this.loop && this.loop.isPaused) {
+      this.loop.resume();
+    }
+    if (!this.isRunning) {
+      this.loop.start();
+    }
+    if (!this.activeCapsule) {
+      this.spawnCapsule();
+    }
+    soundEngine.ensureAudioContext();
+    soundEngine.playMove();
+    this.notifyStateChange();
+  }
+
+  /**
    * Generates a pair of Katakana entries for the next capsule
    */
   generateCapsulePair() {
@@ -162,11 +187,11 @@ export class Game {
     let displayType1;
     let displayType2;
     if (this.mode === GAME_MODES.MIXED) {
-      displayType1 = Math.random() < 0.5 ? 'katakana' : 'romaji';
-      displayType2 = Math.random() < 0.5 ? 'katakana' : 'romaji';
+      displayType1 = Math.random() < 0.5 ? 'katakana' : 'hiragana';
+      displayType2 = Math.random() < 0.5 ? 'katakana' : 'hiragana';
     } else if (this.mode === GAME_MODES.REVERSE) {
-      displayType1 = 'romaji';
-      displayType2 = 'romaji';
+      displayType1 = 'hiragana';
+      displayType2 = 'hiragana';
     } else {
       displayType1 = 'katakana';
       displayType2 = 'katakana';
@@ -247,7 +272,8 @@ export class Game {
       if (matches.lines && matches.lines.length > 0) {
         const firstEntry = dictionary.getById(matches.lines[0].entryId);
         if (firstEntry) {
-          matchedPairLabel = `${firstEntry.katakana} = ${firstEntry.romaji}`;
+          const hira = firstEntry.hiragana || firstEntry.romaji;
+          matchedPairLabel = `${firstEntry.katakana} = ${hira}`;
         }
       }
 
@@ -372,27 +398,27 @@ export class Game {
 
   // Player input actions
   moveLeft() {
-    if (!this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
+    if (!this.isStarted || !this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
     if (this.activeCapsule.moveLeft(this.grid)) soundEngine.playMove();
   }
 
   moveRight() {
-    if (!this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
+    if (!this.isStarted || !this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
     if (this.activeCapsule.moveRight(this.grid)) soundEngine.playMove();
   }
 
   rotateCW() {
-    if (!this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
+    if (!this.isStarted || !this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
     if (this.activeCapsule.rotateCW(this.grid)) soundEngine.playRotate();
   }
 
   rotateCCW() {
-    if (!this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
+    if (!this.isStarted || !this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
     if (this.activeCapsule.rotateCCW(this.grid)) soundEngine.playRotate();
   }
 
   startSoftDrop() {
-    if (this.processState === 'playing') this.isSoftDropping = true;
+    if (this.isStarted && this.processState === 'playing') this.isSoftDropping = true;
   }
 
   stopSoftDrop() {
@@ -400,6 +426,10 @@ export class Game {
   }
 
   hardDrop() {
+    if (!this.isStarted) {
+      this.startGame();
+      return;
+    }
     if (!this.isRunning || this.isPaused || this.isGameOver || this.isVictory || this.processState !== 'playing' || !this.activeCapsule) return;
     this.activeCapsule.hardDrop(this.grid);
     soundEngine.playHardDrop();
@@ -424,7 +454,9 @@ export class Game {
     this.grid.populateViruses(count, this.mode);
     this.activeCapsule = null;
     this.isGameOver = false;
-    this.spawnCapsule();
+    if (this.isStarted) {
+      this.spawnCapsule();
+    }
     this.notifyStateChange();
   }
 
@@ -459,7 +491,7 @@ export class Game {
     this.resetStageGrid();
     this.nextCapsule = this.generateCapsulePair();
     this.renderNextPreview();
-    if (this.isRunning && !this.isPaused) {
+    if (this.isStarted && this.isRunning && !this.isPaused) {
       this.spawnCapsule();
     }
     this.notifyStateChange();
@@ -484,7 +516,7 @@ export class Game {
     this.currentMatches = null;
     this.comboCount = 0;
     this.activeCapsule = null;
-    if (this.isRunning && !this.isPaused) {
+    if (this.isStarted && this.isRunning && !this.isPaused) {
       this.spawnCapsule();
     }
   }
@@ -530,7 +562,9 @@ export class Game {
     this.grid.loadDiagnosticScenario(this.mode);
     this.activeCapsule = null;
     this.isGameOver = false;
-    this.spawnCapsule();
+    if (this.isStarted) {
+      this.spawnCapsule();
+    }
     this.notifyStateChange();
   }
 
@@ -538,7 +572,9 @@ export class Game {
     this.grid.clear();
     this.activeCapsule = null;
     this.isGameOver = false;
-    this.spawnCapsule();
+    if (this.isStarted) {
+      this.spawnCapsule();
+    }
     this.notifyStateChange();
   }
 
@@ -559,6 +595,10 @@ export class Game {
     this.resetStageGrid();
     this.nextCapsule = this.generateCapsulePair();
     this.renderNextPreview();
+    this.isStarted = true;
+    if (this.loop && this.loop.isPaused) {
+      this.loop.resume();
+    }
     this.start();
     this.spawnCapsule();
   }
@@ -567,6 +607,7 @@ export class Game {
     const stageIdx = Math.min(this.currentStage - 1, STAGE_CONFIGS.length - 1);
     const stageConfig = STAGE_CONFIGS[stageIdx] || { viruses: 4, title: `Level ${this.currentStage}` };
     return {
+      isStarted: this.isStarted,
       isRunning: this.isRunning,
       isPaused: this.isPaused,
       isGameOver: this.isGameOver,
@@ -605,7 +646,7 @@ export class Game {
 
   start() {
     this.loop.start();
-    if (!this.activeCapsule) this.spawnCapsule();
+    if (this.isStarted && !this.activeCapsule) this.spawnCapsule();
     this.notifyStateChange();
   }
 
@@ -615,12 +656,13 @@ export class Game {
   }
 
   togglePause() {
+    if (!this.isStarted) return;
     this.loop.togglePause();
     this.notifyStateChange();
   }
 
   update(dt) {
-    if (this.isGameOver || this.isVictory || this.isPaused || !this.isRunning) return;
+    if (!this.isStarted || this.isGameOver || this.isVictory || this.isPaused || !this.isRunning) return;
 
     if (this.comboBannerAlpha > 0) {
       this.comboBannerAlpha -= dt / 1500;
@@ -696,6 +738,10 @@ export class Game {
       this.renderer.drawEndGameOverlay(true, this.currentStage, this.score, this.highScore);
     } else if (this.isGameOver) {
       this.renderer.drawEndGameOverlay(false, this.currentStage, this.score, this.highScore);
+    } else if (this.isPaused) {
+      this.renderer.drawPauseOverlay();
+    } else if (!this.isStarted) {
+      this.renderer.drawStartPrompt();
     }
   }
 

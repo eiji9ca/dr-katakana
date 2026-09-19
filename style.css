@@ -464,8 +464,20 @@ body {
 
 .dict-kana {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #FFFFFF;
+}
+
+.dict-hira {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #38BDF8;
+}
+
+.dict-eq {
+  font-size: 0.75rem;
+  color: #64748B;
+  margin: 0 0.15rem;
 }
 
 .dict-romaji {
@@ -474,7 +486,112 @@ body {
   color: var(--accent-cyan);
 }
 
+/* Collapsible Panel Card */
+details.panel-collapsible {
+  overflow: hidden;
+}
+
+details.panel-collapsible summary.collapsible-trigger {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+details.panel-collapsible summary.collapsible-trigger::-webkit-details-marker {
+  display: none;
+}
+
+details.panel-collapsible summary.collapsible-trigger:hover {
+  background-color: #24344D;
+}
+
+details.panel-collapsible .collapsible-icon {
+  font-size: 0.7rem;
+  color: #94A3B8;
+  transition: transform 0.2s ease;
+}
+
+details.panel-collapsible[open] .collapsible-icon {
+  transform: rotate(180deg);
+}
+
+details.panel-collapsible[open] summary.collapsible-trigger {
+  border-bottom: 1px solid var(--border-card);
+}
+
+/* How to Play Guide */
+.how-to-play-guide {
+  margin-bottom: 0.85rem;
+  padding: 0.65rem 0.75rem;
+  background: rgba(56, 189, 248, 0.08);
+  border-left: 3px solid #38BDF8;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--text-light);
+}
+
+.guide-title {
+  font-weight: 700;
+  color: #38BDF8;
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.guide-steps {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.guide-steps li {
+  color: #CBD5E1;
+}
+
+.guide-steps li strong {
+  color: #F8FAFC;
+}
+
 /* Action Buttons */
+.btn-start-game {
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+  border: 1px solid #38BDF8;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.92rem;
+  padding: 0.65rem 1rem;
+  box-shadow: 0 0 16px rgba(2, 132, 199, 0.35);
+  letter-spacing: 0.04em;
+  transition: all 0.18s ease;
+}
+
+.btn-start-game:hover {
+  background: linear-gradient(135deg, #0369A1 0%, #075985 100%);
+  border-color: #7DD3FC;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-restart-alt {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.35) 100%);
+  border: 1px solid #EF4444;
+  color: #FECACA;
+  font-weight: 700;
+  padding: 0.6rem 0.85rem;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-restart-alt:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.35) 0%, rgba(220, 38, 38, 0.5) 100%);
+  color: #FFFFFF;
+  border-color: #F87171;
+}
 .btn-vertical-group {
   display: flex;
   flex-direction: column;

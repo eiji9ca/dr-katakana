@@ -21,6 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const studyGuide = new StudyGuideView();
 
   // Control Buttons
+  const startBtn = document.getElementById('btn-start-game');
   const pauseBtn = document.getElementById('btn-pause');
   const restartBtn = document.getElementById('btn-restart');
   const nextStageBtn = document.getElementById('btn-next-stage');
@@ -71,7 +72,13 @@ window.addEventListener('DOMContentLoaded', () => {
     onMoveRight: () => game.moveRight(),
     onRotateCCW: () => game.rotateCCW(),
     onRotateCW: () => game.rotateCW(),
-    onHardDrop: () => game.hardDrop(),
+    onHardDrop: () => {
+      if (!game.isStarted) {
+        game.startGame();
+      } else {
+        game.hardDrop();
+      }
+    },
     onSoftDropStart: () => game.startSoftDrop(),
     onSoftDropEnd: () => game.stopSoftDrop(),
   });
@@ -80,6 +87,18 @@ window.addEventListener('DOMContentLoaded', () => {
   game.start();
   hud.updateState(game.getStateSnapshot());
   game.renderNextPreview();
+
+  // Start Game Button (also handles Restart when paused)
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      soundEngine.ensureAudioContext();
+      if (!game.isStarted || game.isGameOver) {
+        game.startGame();
+      } else if (game.isPaused) {
+        game.restart();
+      }
+    });
+  }
 
   // Next Stage Button
   if (nextStageBtn) {
@@ -158,7 +177,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Keyboard shortcuts: 'M' (mode), '1'-'5' (direct level), '[' and ']' (level toggle)
+  // Keyboard shortcuts: 'M' (mode), '1'-'9' and '0' (Level 1-10), '[' and ']' (level toggle)
   window.addEventListener('keydown', (e) => {
     if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
       return;
@@ -167,9 +186,14 @@ window.addEventListener('DOMContentLoaded', () => {
       game.toggleMode();
     }
     const num = parseInt(e.key, 10);
-    if (!isNaN(num) && num >= 1 && num <= 5) {
-      soundEngine.ensureAudioContext();
-      game.setStage(num);
+    if (!isNaN(num)) {
+      if (num >= 1 && num <= 9) {
+        soundEngine.ensureAudioContext();
+        game.setStage(num);
+      } else if (num === 0) {
+        soundEngine.ensureAudioContext();
+        game.setStage(10);
+      }
     }
     if (e.key === '[' || e.key === '{') {
       soundEngine.ensureAudioContext();

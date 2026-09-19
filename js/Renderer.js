@@ -229,6 +229,71 @@ export class Renderer {
     ctx.restore();
   }
 
+  /**
+   * Draw "Ready to Play" start overlay when waiting for player to start the game
+   */
+  drawStartPrompt() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.72)';
+    ctx.fillRect(0, 0, this.width, this.height);
+
+    const boxW = 230;
+    const boxH = 96;
+    const boxX = (this.width - boxW) / 2;
+    const boxY = (this.height - boxH) / 2 - 20;
+
+    // Card background
+    ctx.fillStyle = 'rgba(30, 41, 59, 0.96)';
+    ctx.strokeStyle = '#38BDF8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(boxX, boxY, boxW, boxH, 10);
+    } else {
+      ctx.rect(boxX, boxY, boxW, boxH);
+    }
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    ctx.font = 'bold 18px system-ui, sans-serif';
+    ctx.fillStyle = '#38BDF8';
+    ctx.fillText('▶ READY TO PLAY', this.width / 2, boxY + 28);
+
+    ctx.font = '13px system-ui, sans-serif';
+    ctx.fillStyle = '#F8FAFC';
+    ctx.fillText('Press "Start Game" or', this.width / 2, boxY + 56);
+    ctx.font = 'bold 12px monospace, system-ui';
+    ctx.fillStyle = '#FDE047';
+    ctx.fillText('SPACEBAR to Begin', this.width / 2, boxY + 74);
+
+    ctx.restore();
+  }
+
+  /**
+   * Draw Pause overlay
+   */
+  drawPauseOverlay() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+    ctx.fillRect(0, 0, this.width, this.height);
+
+    ctx.fillStyle = '#F8FAFC';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold 22px system-ui, sans-serif';
+    ctx.fillText('PAUSED', this.width / 2, this.height / 2 - 20);
+
+    ctx.font = '13px system-ui, sans-serif';
+    ctx.fillStyle = '#94A3B8';
+    ctx.fillText('Press P or click Resume to continue', this.width / 2, this.height / 2 + 12);
+    ctx.restore();
+  }
+
   get particles() {
     return this.particleSystem.particles;
   }

@@ -23,7 +23,7 @@ export class StudyGuideView {
     this.lastRenderedKey = key;
 
     if (this.title) {
-      this.title.textContent = `Katakana Reference Chart (${entries.length})`;
+      this.title.textContent = `Kana Reference Chart (${entries.length})`;
     }
 
     this.container.innerHTML = '';
@@ -32,7 +32,9 @@ export class StudyGuideView {
     entries.forEach((item) => {
       const chip = document.createElement('div');
       chip.className = 'dict-chip';
-      chip.innerHTML = `<span class="dict-kana">${item.katakana}</span><span class="dict-romaji">${item.romaji}</span>`;
+      const hira = item.hiragana || item.romaji;
+      chip.innerHTML = `<span class="dict-kana">${item.katakana}</span><span class="dict-eq">=</span><span class="dict-hira">${hira}</span>`;
+      chip.title = `${item.katakana} (Katakana) = ${hira} (Hiragana)`;
       fragment.appendChild(chip);
     });
 
